@@ -47,7 +47,6 @@ public class Parser {
 	 */
 	private TreeNode factor() {
 		String token = tokens[currentToken];
-		System.out.println(token);
 		currentToken++;
 		if (token.equals("(")) return expression();
 		else if (token.equals("-")) {
@@ -79,9 +78,12 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode expression() {
-
-		// TODO fill me in
+		String token = tokens[currentToken];
+		TreeNode result = factor();
+		while (currentToken < (tokens.length - 1) && 
+				(tokens[currentToken + 1].equals("+") || tokens[currentToken + 1].equals("-"))){
+			//do things
+		}
 		return null;
-
 	}
 }
