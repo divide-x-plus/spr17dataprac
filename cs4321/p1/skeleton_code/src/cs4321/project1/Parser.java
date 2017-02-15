@@ -1,6 +1,6 @@
-package cs4321.project1;
 
-import cs4321.project1.tree.*;
+
+import tree.*;
 
 /**
  * Class for a parser that can parse a string and produce an expression tree. To
@@ -37,7 +37,7 @@ public class Parser {
 	 * @return the (root node of) the resulting tree
 	 */
 	public TreeNode parse() {
-		return factor();
+		return expression();
 	}
 
 	/**
@@ -67,9 +67,19 @@ public class Parser {
 	 */
 	private TreeNode term() {
 
-		// TODO fill me in
-		return null;
-
+		String token = tokens[currentToken];
+		currentToken++;
+		
+		//inst Parser objects
+		Parser(tokens)
+		
+		if (token.equals("*")){
+			return new MultiplicationTreeNode();
+		} else if (token.equals("/")) {
+			return new DivisionTreeNode();
+		} else {
+			factor(); //base case
+		}
 	}
 
 	/**
@@ -78,12 +88,9 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode expression() {
-		String token = tokens[currentToken];
-		TreeNode result = factor();
-		while (currentToken < (tokens.length - 1) && 
-				(tokens[currentToken + 1].equals("+") || tokens[currentToken + 1].equals("-"))){
-			//do things
-		}
+
+		// TODO fill me in
 		return null;
+
 	}
 }
