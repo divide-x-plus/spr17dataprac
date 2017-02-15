@@ -1,6 +1,6 @@
+package cs4321.project1;
 
-
-import tree.*;
+import cs4321.project1.tree.*;
 
 /**
  * Class for a parser that can parse a string and produce an expression tree. To
