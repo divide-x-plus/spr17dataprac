@@ -37,7 +37,7 @@ public class Parser {
 	 * @return the (root node of) the resulting tree
 	 */
 	public TreeNode parse() {
-		return expression();
+		return factor();
 	}
 
 	/**
@@ -46,9 +46,19 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode factor() {
-
-		// TODO fill me in
-		return null;
+		String token = tokens[currentToken];
+		System.out.println(token);
+		currentToken++;
+		if (token.equals("(")) return expression();
+		else if (token.equals("-")) {
+			UnaryMinusTreeNode umtn = new UnaryMinusTreeNode(parse());
+			return umtn;
+		}
+		else {
+			Double d = new Double(token);
+			LeafTreeNode ltn = new LeafTreeNode(d.doubleValue());
+			return ltn;
+		}
 	}
 
 	/**
