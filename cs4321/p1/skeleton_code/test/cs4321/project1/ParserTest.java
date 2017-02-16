@@ -12,7 +12,7 @@ public class ParserTest {
 	 * This class depends on the correct functioning of PrintTreeVisitor(), which is provided for you.
 	 */
 			
-	@Test
+	//@Test
 	public void testSingleNumber() {
 		Parser p1 = new Parser("1.0");
 		TreeNode parseResult1 = p1.parse();
@@ -22,7 +22,7 @@ public class ParserTest {
 
 	}
 	
-	@Test
+	//@Test
 	public void testUnaryMinusSimple() {
 		Parser p1 = new Parser("- 1.0");
 		TreeNode parseResult1 = p1.parse();
@@ -32,14 +32,41 @@ public class ParserTest {
 
 	}
 	
-	@Test
+	//@Test
 	public void testUnaryMinusComplex() {
 		Parser p1 = new Parser("- - 1.0");
-		TreeNode parseResult1 =  p1.parse();
+		TreeNode parseResult1 = p1.parse();
 		PrintTreeVisitor v1 = new PrintTreeVisitor();
 		parseResult1.accept(v1);
 		assertEquals("(-(-1.0))", v1.getResult());
 
+	}
+	
+	//@Test
+	public void testAdditionSimple() {
+		Parser p1 = new Parser("1.0 + 2.0");
+		TreeNode parseResult1 = p1.parse();
+		PrintTreeVisitor v1 = new PrintTreeVisitor();
+		parseResult1.accept(v1);
+		assertEquals("(1.0+2.0)", v1.getResult());
+	}
+	
+	//@Test
+	public void testAdditionNoParens() {
+		Parser p1 = new Parser("1.0 + 2.0 + 3.0");
+		TreeNode parseResult1 = p1.parse();
+		PrintTreeVisitor v1 = new PrintTreeVisitor();
+		parseResult1.accept(v1);
+		assertEquals("((1.0+2.0)+3.0)", v1.getResult());
+	}
+	
+	@Test
+	public void testAdditionComplex() {
+		Parser p1 = new Parser("( 1.0 + 2.0 ) + 3.0");
+		TreeNode parseResult1 = p1.parse();
+		PrintTreeVisitor v1 = new PrintTreeVisitor();
+		parseResult1.accept(v1);
+		assertEquals("((1.0+2.0)+3.0)", v1.getResult());
 	}
 
 }

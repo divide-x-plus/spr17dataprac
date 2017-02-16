@@ -37,7 +37,7 @@ public class Parser {
 	 * @return the (root node of) the resulting tree
 	 */
 	public TreeNode parse() {
-		return factor();
+		return expression();
 	}
 
 	/**
@@ -47,16 +47,22 @@ public class Parser {
 	 */
 	private TreeNode factor() {
 		String token = tokens[currentToken];
+		System.out.println("parsing factor. " + "current token: " + token);
 		currentToken++;
-		if (token.equals("(")) return expression();
+		if (token.equals("(") || token.equals(")")) return expression();
 		else if (token.equals("-")) {
 			UnaryMinusTreeNode umtn = new UnaryMinusTreeNode(parse());
 			return umtn;
 		}
 		else {
-			Double d = new Double(token);
-			LeafTreeNode ltn = new LeafTreeNode(d.doubleValue());
-			return ltn;
+			try {
+				Double d = new Double(token);
+				LeafTreeNode ltn = new LeafTreeNode(d.doubleValue());
+				return ltn;
+			}
+			catch (NumberFormatException e) {
+				return expression();
+			}
 		}
 	}
 
@@ -66,24 +72,50 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode term() {
+		TreeNode left = factor();
 
-		// TODO fill me in
-		return null;
-
+		while (currentToken < tokens.length && 
+				(tokens[currentToken].equals("*") || tokens[currentToken].equals("/"))) {
+			String operand = tokens[currentToken];
+			System.out.println("parsing term. " + "current token: " + operand);
+			currentToken++;
+			TreeNode right = factor();
+			if (operand.equals("*")) {
+				TreeNode atn = new MultiplicationTreeNode(left, right);
+				left = atn;
+			}
+			else if (operand.equals("/")) {
+				TreeNode stn = new DivisionTreeNode(left, right);
+				left = stn;
+			}
+		}
+		return left;
 	}
 
 	/**
 	 * Parse the remaining input as far as needed to get the next expression
 	 * 
 	 * @return the (root node of) the resulting subtree
-	 */
+	 */ 
+	
 	private TreeNode expression() {
-		String token = tokens[currentToken];
-		TreeNode result = factor();
-		while (currentToken < (tokens.length - 1) && 
-				(tokens[currentToken + 1].equals("+") || tokens[currentToken + 1].equals("-"))){
-			//do things
+		TreeNode left = term();
+
+		while (currentToken < tokens.length && 
+				(tokens[currentToken].equals("+") || tokens[currentToken].equals("-"))) {
+			String operand = tokens[currentToken];
+			System.out.println("parsing expr. " + "current token: " + operand);
+			currentToken++;
+			TreeNode right = term();
+			if (operand.equals("+")) {
+				TreeNode atn = new AdditionTreeNode(left, right);
+				left = atn;
+			}
+			else if (operand.equals("-")) {
+				TreeNode stn = new SubtractionTreeNode(left, right);
+				left = stn;
+			}
 		}
-		return null;
+		return left;
 	}
 }
