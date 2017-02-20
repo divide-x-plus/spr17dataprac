@@ -46,12 +46,20 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode factor() {
+		System.out.println("called factor");
 		String token = tokens[currentToken];
 		System.out.println("parsing factor. " + "current token: " + token);
 		System.out.println(currentToken);
 		currentToken++;
-		currentToken = (currentToken < tokens.length && tokens[currentToken].equals(")")) 
-				? (currentToken+1) : currentToken;
+		
+		// consume all but last close paren
+		while (currentToken + 1 < tokens.length && tokens[currentToken].equals(")") 
+				&& tokens[currentToken+1].equals(")")) {
+			currentToken++;
+			System.out.println("eliminated )");
+		} 
+		
+		System.out.println("updated token: " + currentToken);
 		if (token.equals("(")) return expression();
 		else if (token.equals("-")) {
 			UnaryMinusTreeNode umtn = new UnaryMinusTreeNode(parse());
@@ -65,6 +73,7 @@ public class Parser {
 				return ltn;
 			}
 			catch (NumberFormatException e) {
+				System.out.println("caught exception");
 				return expression();
 			}
 		}
@@ -76,6 +85,7 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode term() {
+		System.out.println("called term");
 		TreeNode left = factor();
 
 		while (currentToken < tokens.length && 
@@ -106,6 +116,7 @@ public class Parser {
 	 */ 
 	
 	private TreeNode expression() {
+		System.out.println("called expr");
 		TreeNode left = term();
 
 		while (currentToken < tokens.length && 
