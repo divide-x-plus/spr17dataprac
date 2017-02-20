@@ -48,9 +48,11 @@ public class Parser {
 	private TreeNode factor() {
 		String token = tokens[currentToken];
 		System.out.println("parsing factor. " + "current token: " + token);
+		System.out.println(currentToken);
 		currentToken++;
+		currentToken = (currentToken < tokens.length && tokens[currentToken].equals(")")) 
+				? (currentToken+1) : currentToken;
 		if (token.equals("(")) return expression();
-		//else if (token.equals(")")) return term();
 		else if (token.equals("-")) {
 			UnaryMinusTreeNode umtn = new UnaryMinusTreeNode(parse());
 			return umtn;
