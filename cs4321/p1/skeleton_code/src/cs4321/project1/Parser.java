@@ -49,7 +49,8 @@ public class Parser {
 		String token = tokens[currentToken];
 		System.out.println("parsing factor. " + "current token: " + token);
 		currentToken++;
-		if (token.equals("(") || token.equals(")")) return expression();
+		if (token.equals("(")) return expression();
+		//else if (token.equals(")")) return term();
 		else if (token.equals("-")) {
 			UnaryMinusTreeNode umtn = new UnaryMinusTreeNode(parse());
 			return umtn;
@@ -58,6 +59,7 @@ public class Parser {
 			try {
 				Double d = new Double(token);
 				LeafTreeNode ltn = new LeafTreeNode(d.doubleValue());
+				//currentToken++;
 				return ltn;
 			}
 			catch (NumberFormatException e) {
@@ -81,13 +83,16 @@ public class Parser {
 			currentToken++;
 			TreeNode right = factor();
 			if (operand.equals("*")) {
-				TreeNode atn = new MultiplicationTreeNode(left, right);
-				left = atn;
+				TreeNode mtn = new MultiplicationTreeNode(left, right);
+				left = mtn;
 			}
 			else if (operand.equals("/")) {
-				TreeNode stn = new DivisionTreeNode(left, right);
-				left = stn;
+				TreeNode dtn = new DivisionTreeNode(left, right);
+				left = dtn;
 			}
+			// consume next token if close paren
+			currentToken = (currentToken < tokens.length && tokens[currentToken].equals(")")) 
+					? (currentToken+1) : currentToken;
 		}
 		return left;
 	}
@@ -115,6 +120,9 @@ public class Parser {
 				TreeNode stn = new SubtractionTreeNode(left, right);
 				left = stn;
 			}
+			// consume next token if close paren
+			currentToken = (currentToken < tokens.length && tokens[currentToken].equals(")")) 
+					? (currentToken+1) : currentToken;
 		}
 		return left;
 	}
