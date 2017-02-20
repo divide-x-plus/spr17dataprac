@@ -12,7 +12,7 @@ import cs4321.project1.tree.*;
  * parentheses (), a factor with a unary - before it, or a number.
  * 
  * @author Lucja Kot
- * @author Your names and netids go here
+ * @author Ella Xue (ex32), Varun Belur (vb239), Jim Li (zl238)
  */
 public class Parser {
 
@@ -46,20 +46,15 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode factor() {
-		System.out.println("called factor");
 		String token = tokens[currentToken];
-		System.out.println("parsing factor. " + "current token: " + token);
-		System.out.println(currentToken);
 		currentToken++;
 		
 		// consume all but last close paren
 		while (currentToken + 1 < tokens.length && tokens[currentToken].equals(")") 
 				&& tokens[currentToken+1].equals(")")) {
 			currentToken++;
-			System.out.println("eliminated )");
 		} 
 		
-		System.out.println("updated token: " + currentToken);
 		if (token.equals("(")) return expression();
 		else if (token.equals("-")) {
 			UnaryMinusTreeNode umtn = new UnaryMinusTreeNode(parse());
@@ -69,11 +64,9 @@ public class Parser {
 			try {
 				Double d = new Double(token);
 				LeafTreeNode ltn = new LeafTreeNode(d.doubleValue());
-				//currentToken++;
 				return ltn;
 			}
 			catch (NumberFormatException e) {
-				System.out.println("caught exception");
 				return expression();
 			}
 		}
@@ -85,13 +78,11 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode term() {
-		System.out.println("called term");
 		TreeNode left = factor();
 
 		while (currentToken < tokens.length && 
 				(tokens[currentToken].equals("*") || tokens[currentToken].equals("/"))) {
 			String operand = tokens[currentToken];
-			System.out.println("parsing term. " + "current token: " + operand);
 			currentToken++;
 			TreeNode right = factor();
 			if (operand.equals("*")) {
@@ -116,13 +107,11 @@ public class Parser {
 	 */ 
 	
 	private TreeNode expression() {
-		System.out.println("called expr");
 		TreeNode left = term();
 
 		while (currentToken < tokens.length && 
 				(tokens[currentToken].equals("+") || tokens[currentToken].equals("-"))) {
 			String operand = tokens[currentToken];
-			System.out.println("parsing expr. " + "current token: " + operand);
 			currentToken++;
 			TreeNode right = term();
 			if (operand.equals("+")) {
