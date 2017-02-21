@@ -20,7 +20,7 @@ public class FullSystemTest {
         Parser p1 = new Parser("( - 2.0 * ( - 3.0 + 5.0 ) ) / - 2.0");
         TreeNode parseResult1 = p1.parse();
         
-        //test parsed string is in correct representation
+        //test parsed string
         PrintTreeVisitor print = new PrintTreeVisitor();
         parseResult1.accept(print);
         assertEquals("(((-2.0)*((-3.0)+5.0))/(-2.0))", print.getResult());
@@ -75,7 +75,7 @@ public class FullSystemTest {
         Parser p1 = new Parser("60.0 / ( - 1.0 + - 5.0 )  / 5.0");
         TreeNode parseResult1 = p1.parse();
         
-        //test parsed string is in correct representation
+        //test parsed string
         PrintTreeVisitor print = new PrintTreeVisitor();
         parseResult1.accept(print);
         assertEquals("((60.0/((-1.0)+(-5.0)))/5.0)", print.getResult());
