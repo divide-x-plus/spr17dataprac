@@ -12,6 +12,116 @@ public class FullSystemTest {
 	
 	private static final double DELTA = 1e-15;
 	
+    /**
+     * added additional test case for complex expression
+     */
+    @Test
+    public void testComplexExpression7() {
+        Parser p1 = new Parser("( - 2.0 * ( - 3.0 + 5.0 ) ) / - 2.0");
+        TreeNode parseResult1 = p1.parse();
+        
+        //test parsed string is in correct representation
+        PrintTreeVisitor print = new PrintTreeVisitor();
+        parseResult1.accept(print);
+        assertEquals("(((-2.0)*((-3.0)+5.0))/(-2.0))", print.getResult());
+        
+        EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+        parseResult1.accept(v1);
+        double treeEvaluationResult = v1.getResult();
+        assertEquals(2.0, treeEvaluationResult, DELTA);
+        
+        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+        parseResult1.accept(v2);
+        ListNode prefixRepresentation = v2.getResult();
+        ListNode prefixTemp = prefixRepresentation;
+        
+        //test if instance of each listnode is in correct order
+        assertTrue(prefixTemp instanceof DivisionListNode);
+        prefixTemp= prefixTemp.getNext();
+        assertTrue(prefixTemp instanceof MultiplicationListNode);
+        prefixTemp= prefixTemp.getNext();
+        assertTrue(prefixTemp instanceof UnaryMinusListNode);
+        
+        //test eval prefix list visitor
+        EvaluatePrefixListVisitor v3 = new EvaluatePrefixListVisitor();
+        prefixRepresentation.accept(v3);
+        double prefixEvaluationResult = v3.getResult();
+        assertEquals(2.0, prefixEvaluationResult, DELTA);
+        
+        PrintListVisitor pv1 = new PrintListVisitor();
+        prefixRepresentation.accept(pv1);
+        assertEquals( "/ * ~ 2.0 + ~ 3.0 5.0 ~ 2.0", pv1.getResult());
+        
+        //test build postfix tree and eval prefix list visitor
+        BuildPostfixExpressionTreeVisitor v4 = new BuildPostfixExpressionTreeVisitor();
+        parseResult1.accept(v4);
+        ListNode postfixRepresentation = v4.getResult();
+        EvaluatePostfixListVisitor v5 = new EvaluatePostfixListVisitor();
+        postfixRepresentation.accept(v5);
+        double postfixEvaluationResult = v5.getResult();
+        assertEquals(2.0, postfixEvaluationResult, DELTA);
+        
+        PrintListVisitor pv2 = new PrintListVisitor();
+        postfixRepresentation.accept(pv2);
+        assertEquals("2.0 ~ 3.0 ~ 5.0 + * 2.0 ~ /", pv2.getResult());
+        
+    }
+    
+    /**
+     * added additional test case for complex expression
+     */
+    @Test
+    public void testComplexExpression8() {
+        Parser p1 = new Parser("60.0 / ( - 1.0 + - 5.0 )  / 5.0");
+        TreeNode parseResult1 = p1.parse();
+        
+        //test parsed string is in correct representation
+        PrintTreeVisitor print = new PrintTreeVisitor();
+        parseResult1.accept(print);
+        assertEquals("((60.0/((-1.0)+(-5.0)))/5.0)", print.getResult());
+        
+        EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+        parseResult1.accept(v1);
+        double treeEvaluationResult = v1.getResult();
+        assertEquals(-2.0, treeEvaluationResult, DELTA);
+        
+        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+        parseResult1.accept(v2);
+        ListNode prefixRepresentation = v2.getResult();
+        ListNode prefixTemp = prefixRepresentation;
+        
+        //test if instance of each listNode is in correct order
+        assertTrue(prefixTemp instanceof DivisionListNode);
+        prefixTemp= prefixTemp.getNext();
+        
+        assertTrue(prefixTemp instanceof DivisionListNode);
+        prefixTemp= prefixTemp.getNext();
+        assertTrue(prefixTemp instanceof NumberListNode);
+        
+        //test eval prefix list visitor
+        EvaluatePrefixListVisitor v3 = new EvaluatePrefixListVisitor();
+        prefixRepresentation.accept(v3);
+        double prefixEvaluationResult = v3.getResult();
+        assertEquals(-2.0, prefixEvaluationResult, DELTA);
+        
+        PrintListVisitor pv1 = new PrintListVisitor();
+        prefixRepresentation.accept(pv1);
+        assertEquals( "/ / 60.0 + ~ 1.0 ~ 5.0 5.0", pv1.getResult());
+        
+        //test build postfix tree and eval prefix list visitor
+        BuildPostfixExpressionTreeVisitor v4 = new BuildPostfixExpressionTreeVisitor();
+        parseResult1.accept(v4);
+        ListNode postfixRepresentation = v4.getResult();
+        EvaluatePostfixListVisitor v5 = new EvaluatePostfixListVisitor();
+        postfixRepresentation.accept(v5);
+        double postfixEvaluationResult = v5.getResult();
+        assertEquals(-2.0, postfixEvaluationResult, DELTA);
+        
+        PrintListVisitor pv2 = new PrintListVisitor();
+        postfixRepresentation.accept(pv2);
+        assertEquals("60.0 1.0 ~ 5.0 ~ + / 5.0 /", pv2.getResult());
+    }
+
 	@Test
 	public void testSingleNumber() {
 		Parser p1 = new Parser("1.0");
