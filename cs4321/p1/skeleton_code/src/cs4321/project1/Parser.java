@@ -57,7 +57,7 @@ public class Parser {
 		
 		if (token.equals("(")) return expression();
 		else if (token.equals("-")) {
-			UnaryMinusTreeNode umtn = new UnaryMinusTreeNode(parse());
+			UnaryMinusTreeNode umtn = new UnaryMinusTreeNode(factor());
 			return umtn;
 		}
 		else {
