@@ -51,6 +51,7 @@ public class ParserTest {
 		assertEquals("(1.0+2.0)", v1.getResult());
 	}
 	
+	// added test
 	@Test
 	public void testAdditionNoParens() {
 		Parser p1 = new Parser("1.0 + 2.0 + 3.0");
@@ -60,6 +61,7 @@ public class ParserTest {
 		assertEquals("((1.0+2.0)+3.0)", v1.getResult());
 	}
 	
+	// added test
 	@Test
 	public void testAdditionComplex() {
 		Parser p1 = new Parser("( 1.0 + 2.0 ) + 3.0");
@@ -69,6 +71,7 @@ public class ParserTest {
 		assertEquals("((1.0+2.0)+3.0)", v1.getResult());
 	}
 	
+	// added test
 	@Test
 	public void testMultiplicationComplex() {
 		Parser p1 = new Parser("( 1.0 * 2.0 ) * 3.0");
@@ -78,6 +81,7 @@ public class ParserTest {
 		assertEquals("((1.0*2.0)*3.0)", v1.getResult());
 	}
 	
+	// added test
 	@Test
 	public void testParens() {
 		Parser p1 = new Parser("( ( ( 1.0 + 2.0 ) ) )");
@@ -87,6 +91,7 @@ public class ParserTest {
 		assertEquals("(1.0+2.0)", v1.getResult());
 	}
 	
+	// added test
 	@Test
 	public void testComplex() {
 		Parser p1 = new Parser("( 1.0 - ( - 2.0 ) ) * 3.0");
@@ -96,6 +101,7 @@ public class ParserTest {
 		assertEquals("((1.0-(-2.0))*3.0)", v1.getResult());
 	}
 	
+	// added test
 	@Test
 	public void testVeryComplex() {
 		Parser p1 = new Parser("( 1.0 + ( - ( - 2.0 ) ) ) * 3.0 / ( 5.0 - ( - 2.0 ) )");

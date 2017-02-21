@@ -65,5 +65,211 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		assertTrue(first instanceof NumberListNode);
 		assertEquals(((NumberListNode) first).getData(), 1.0, DELTA);
 	}
+	
+	@Test
+	public void testMultiplicationNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new MultiplicationTreeNode(n1, n2);
+		TreeNode n4 = new MultiplicationTreeNode(n2, n1);
+		
+        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n3.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof MultiplicationListNode);
+		ListNode first = result.getNext();
+		assertTrue(first instanceof NumberListNode);
+		assertEquals(((NumberListNode) first).getData(), 1.0, DELTA);
+		ListNode second = first.getNext();
+		assertTrue(second instanceof NumberListNode);
+		assertEquals(((NumberListNode) second).getData(), 2.0, DELTA);
+		
+		
+        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		n4.accept(v2);
+		result = v2.getResult();
+		assertTrue(result instanceof MultiplicationListNode);
+		first = result.getNext();
+		assertTrue(first instanceof NumberListNode);
+		assertEquals(((NumberListNode) first).getData(), 2.0, DELTA);
+		second = first.getNext();
+		assertTrue(second instanceof NumberListNode);
+		assertEquals(((NumberListNode) second).getData(), 1.0, DELTA);
+	}
+	
+	@Test
+	public void testSubtractionNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new SubtractionTreeNode(n1, n2);
+		TreeNode n4 = new SubtractionTreeNode(n2, n1);
+		
+        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n3.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof SubtractionListNode);
+		ListNode first = result.getNext();
+		assertTrue(first instanceof NumberListNode);
+		assertEquals(((NumberListNode) first).getData(), 1.0, DELTA);
+		ListNode second = first.getNext();
+		assertTrue(second instanceof NumberListNode);
+		assertEquals(((NumberListNode) second).getData(), 2.0, DELTA);
+		
+		
+        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		n4.accept(v2);
+		result = v2.getResult();
+		assertTrue(result instanceof SubtractionListNode);
+		first = result.getNext();
+		assertTrue(first instanceof NumberListNode);
+		assertEquals(((NumberListNode) first).getData(), 2.0, DELTA);
+		second = first.getNext();
+		assertTrue(second instanceof NumberListNode);
+		assertEquals(((NumberListNode) second).getData(), 1.0, DELTA);
+	}
+	@Test
+	public void testDivisionNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new DivisionTreeNode(n1, n2);
+		TreeNode n4 = new DivisionTreeNode(n2, n1);
+		
+        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n3.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof DivisionListNode);
+		ListNode first = result.getNext();
+		assertTrue(first instanceof NumberListNode);
+		assertEquals(((NumberListNode) first).getData(), 1.0, DELTA);
+		ListNode second = first.getNext();
+		assertTrue(second instanceof NumberListNode);
+		assertEquals(((NumberListNode) second).getData(), 2.0, DELTA);
+		
+		
+        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		n4.accept(v2);
+		result = v2.getResult();
+		assertTrue(result instanceof DivisionListNode);
+		first = result.getNext();
+		assertTrue(first instanceof NumberListNode);
+		assertEquals(((NumberListNode) first).getData(), 2.0, DELTA);
+		second = first.getNext();
+		assertTrue(second instanceof NumberListNode);
+		assertEquals(((NumberListNode) second).getData(), 1.0, DELTA);
+	}
+	
+	@Test
+	public void testComplexExpressionTree(){
+		TreeNode n1 = new LeafTreeNode(12.0); 
+		TreeNode n2 = new LeafTreeNode(2.0); 
+		TreeNode n3 = new LeafTreeNode(3.0); 
+		TreeNode n4 = new UnaryMinusTreeNode(n1); 
+		TreeNode n5 = new MultiplicationTreeNode(n2, n3);
+        TreeNode n6 = new DivisionTreeNode(n4, n5);
+        TreeNode n7 = new LeafTreeNode(5.0);
+        TreeNode n8 = new AdditionTreeNode(n7, n6);
+        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n8.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof AdditionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 5.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof DivisionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof UnaryMinusListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 12.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof MultiplicationListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 3.0, DELTA);
+        
+	}
+	
+    // added test
+	@Test
+	public void testComplex1() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new LeafTreeNode(3.0);
+		TreeNode n4 = new UnaryMinusTreeNode(n2);
+		TreeNode n5 = new AdditionTreeNode(n3, n1);
+		TreeNode n6 = new MultiplicationTreeNode(n4, n5);
+
+		BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n6.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof MultiplicationListNode);
+		result = result.getNext();
+		assertTrue(result instanceof UnaryMinusListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof AdditionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 3.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 1.0, DELTA);
+		assertNull(result.getNext());
+
+	}
+	
+    // added test
+	@Test
+	public void testComplex2() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new LeafTreeNode(3.0);
+		TreeNode n4 = new LeafTreeNode(4.0);
+		TreeNode n_um1 = new UnaryMinusTreeNode(n2);
+		TreeNode n_um2 = new UnaryMinusTreeNode(n_um1);
+		TreeNode n_a1 = new AdditionTreeNode(n1, n_um2);
+		TreeNode n_m1 = new MultiplicationTreeNode(n_a1, n3);
+		TreeNode n_s1 = new SubtractionTreeNode(n4, n_um1);
+		TreeNode n_d1 = new DivisionTreeNode(n_m1, n_s1);
+
+		BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n_d1.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof DivisionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof MultiplicationListNode);
+		result = result.getNext();
+		assertTrue(result instanceof AdditionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 1.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof UnaryMinusListNode);
+		result = result.getNext();
+		assertTrue(result instanceof UnaryMinusListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 3.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof SubtractionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 4.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof UnaryMinusListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		assertNull(result.getNext());
+	}
 
 }
