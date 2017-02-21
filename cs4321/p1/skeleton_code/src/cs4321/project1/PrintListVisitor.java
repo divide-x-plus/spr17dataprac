@@ -3,53 +3,117 @@ package cs4321.project1;
 import cs4321.project1.list.*;
 
 /**
- * Provide a comment about what your class does and the overall logic
+ * Visitor to pretty-print a list expression, fully parenthesized.
  * 
- * @author Your names and netids go here
+ * @author Ella Xue (ex32), Varun Belur(vb239), Jim Li(zl238)
+ * 
  */
-
 public class PrintListVisitor implements ListVisitor {
+	private String result;
 
 	public PrintListVisitor() {
-		// TODO fill me in
+		result = "";
 	}
 
+	/**
+	 * Method to get the finished string representation when visitor is done
+	 * 
+	 * @return string representation of the visited list
+	 */
 	public String getResult() {
-		// TODO fill me in
-		return null;
+		return result;
 	}
 
+	/**
+	 * Visit method for list node; just concatenates the numeric value to the
+	 * running string
+	 * 
+	 * @param node
+	 *            the node to be visited
+	 */
 	@Override
 	public void visit(NumberListNode node) {
-		// TODO fill me in
+		result += node.getData();
+		if(node.getNext() != null){
+			result += " ";
+			node.getNext().accept(this);
+		}
 	}
 
+	/**
+	 * Visit method for addition node in the order of the list
+	 * 
+	 * @param node
+	 *            the node to be visited
+	 */
 	@Override
 	public void visit(AdditionListNode node) {
-		// TODO fill me in
+		result += "+";
+		if(node.getNext() != null){
+			result += " ";
+			node.getNext().accept(this);
+		}
 	}
 
+	/**
+	 * Visit method for subtraction node in the order of the list
+	 * 
+	 * @param node
+	 *            the node to be visited
+	 */
 	@Override
 	public void visit(SubtractionListNode node) {
-		// TODO fill me in
+		result += "-";
+		if(node.getNext() != null){
+			result += " ";
+			node.getNext().accept(this);
+		}
 	}
-
+	
+	/**
+	 * Visit method for multiplication node in the order of the list
+	 * 
+	 * @param node
+	 *            the node to be visited
+	 */
 	@Override
 	public void visit(MultiplicationListNode node) {
-		// TODO fill me in
-
+		result += "*";
+		if(node.getNext() != null){
+			result += " ";
+			node.getNext().accept(this);
+		}
 	}
 
+	/**
+	 * Visit method for division node in the order of the list
+	 * 
+	 * @param node
+	 *            the node to be visited
+	 */
 	@Override
 	public void visit(DivisionListNode node) {
-		// TODO fill me in
-
+		result += "/";
+		if(node.getNext() != null){
+			result += " ";
+			node.getNext().accept(this);
+		}
 	}
 
+	/**
+	 * Visit method for unary minus node; recursively visit next node and wraps
+	 * result in the last node with unary -
+	 * 
+	 * @param node
+	 *            the node to be visited
+	 */
 	@Override
 	public void visit(UnaryMinusListNode node) {
-		// TODO fill me in
-
+		result += "~";
+		if(node.getNext() != null){
+			result += " ";
+			node.getNext().accept(this);
+		}
 	}
 
 }
