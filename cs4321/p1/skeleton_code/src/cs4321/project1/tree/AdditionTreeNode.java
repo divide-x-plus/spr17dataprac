@@ -9,7 +9,7 @@ import cs4321.project1.TreeVisitor;
  */
 
 public class AdditionTreeNode extends BinaryTreeNode {
-
+	
 	public AdditionTreeNode(TreeNode left, TreeNode right) {
 		super(left, right);
 	}
