@@ -1,3 +1,10 @@
 The work is done in collaboration between Ella Xue, Varun Belur, and Jim Li.
 
-Pair.java is created to assist the development of prefix/postfix transformation. 
+Pair.java is created to assist the development of prefix/postfix transformation.
+Pair is used to encapsulate operator and the needed number of operands. It is used
+in EvaluatePrefixListVisitor.java.
+
+In EvaluatePrefixListVisitor, there is a helper function called eval used to evaluate
+the expression on the current stacks based on the operator.
+
+By Ella Xue (ex32), Varun Belur (vb239), Jim Li (zl238) :
