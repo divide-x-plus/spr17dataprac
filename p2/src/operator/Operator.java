@@ -3,6 +3,7 @@ package operator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import project2.Tuple;
 
@@ -27,5 +28,5 @@ public abstract class Operator {
 	 * is null (no more output) and writes each tuple to a suitable PrintStream.
 	 * @throws IOException 
 	 */
-	public abstract void dump(Operator operator) throws IOException;
+	public abstract void dump(Operator operator,String outputDir) throws FileNotFoundException, IOException;
 }

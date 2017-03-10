@@ -3,9 +3,11 @@ import java.util.List;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import net.sf.jsqlparser.statement.select.*;
 import project2.ExpressionEvaluator;
+import project2.ParserExample;
 import project2.Tuple;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Column;
@@ -30,7 +32,7 @@ public class SelectOperator extends Operator {
 			if(tuple == null) return null;
 			ExpressionEvaluator eval = new ExpressionEvaluator(schema, tuple);
 			condition.accept(eval);
-			System.out.println("evaluation tuple " + tuple + " reuslt " + eval.result());
+//			System.out.println("evaluation tuple " + tuple + " reuslt " + eval.result());
 			if(!eval.result()){
 				tuple = null;
 			}
@@ -45,15 +47,18 @@ public class SelectOperator extends Operator {
 		baseOperator.reset();
 	}
 
+	@SuppressWarnings("resource")
 	@Override
-	public void dump(Operator operator) throws FileNotFoundException, IOException {
+	public void dump(Operator operator, String outputDir) throws FileNotFoundException, IOException {
 		// TODO Auto-generated method stub
 		Tuple tuple = getNextTuple();
-		
+		PrintWriter writer = new PrintWriter(outputDir+"/query"+(ParserExample.fileCounter++));
 		while(tuple != null){
+			writer.println(tuple.toString());
 			System.out.println("select operator dumping " + tuple.toString());
 			tuple = getNextTuple();
 		}
+		writer.close();
 	}
 
 }

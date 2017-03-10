@@ -1,6 +1,5 @@
 package project2;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
@@ -28,12 +27,7 @@ public class FromScanner implements FromItemVisitor{
 		println("visit table name " + tableName);
 		//store current table's column attribute name
 		tableColumns = schema.get(tableName.getName());
-		try {
-			scanOperator = new ScanOperator(new File(inputDir, "/data/"+tableName.getName()));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		scanOperator = new ScanOperator(new File(inputDir, "/data/"+tableName.getName()));
 	}
 
 	@Override

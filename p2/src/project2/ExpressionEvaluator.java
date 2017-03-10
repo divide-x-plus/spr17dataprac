@@ -50,7 +50,6 @@ public class ExpressionEvaluator implements ExpressionVisitor{
 	Column[] schema;
 	Tuple tuple;
 	public ExpressionEvaluator(Column[] schema, Tuple tuple){
-//		System.out.println("expression eval constructor");
 		this.schema = schema;
 		this.tuple = tuple;
 		leftVal = 0;
@@ -58,14 +57,6 @@ public class ExpressionEvaluator implements ExpressionVisitor{
 		isColumnName = "";
 		isLongValue = 0;
 		result = true;
-		
-//		System.out.println("items in ");
-//		for(Column col: schema){
-//			System.out.print(" " + col.getColumnName());
-//			
-//		}
-//		
-//		System.out.println("\n" +tuple);
 	}
 		
 	public boolean result(){
